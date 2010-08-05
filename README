@@ -1,0 +1,12 @@
+A Scheme interpreter based on a byte code virtual machine. Implemented in ANSI C.
+
+----
+
+For more information see
+
+    http://peter.michaux.ca/articles/royal-scheme
+    http://github.com/petermichaux/royal-scheme
+
+----
+
+See the LICENSE file for legal information.
