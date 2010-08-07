@@ -4,7 +4,7 @@ A Scheme interpreter based on a byte code virtual machine. Implemented in ANSI C
 
 For more information see
 
-    http://peter.michaux.ca/articles/royal-scheme
+    http://peter.michaux.ca/index#Royal%20Scheme   
     http://github.com/petermichaux/royal-scheme
 
 ----
