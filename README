@@ -7,8 +7,7 @@ that mortals can accomplish the task.
 
 Thanks to Abdulaziz Ghuloum for his paper "An Incremental
 Approach to Compiler Construction". The pedagogy of his
-paper which inspired the incremental development of
-Royal Scheme.
+paper inspired the incremental development of Royal Scheme.
 
 Thanks to Alex Shinn for making his Chibi-Scheme
 implementation open source. Chibi-Scheme has inspired

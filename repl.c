@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "scm.h"
 
-void repl(void) {
+static void repl(void) {
     int p;
     scm_object object;
 

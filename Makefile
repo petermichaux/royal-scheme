@@ -1,23 +1,34 @@
+CC = gcc
+
+FLAGS = -ansi -pedantic-errors -Wall -Wextra            \
+        -Wmissing-include-dirs                          \
+        -Wswitch-default -Wswitch-enum -Wundef          \
+        -Wdeclaration-after-statement -Wcast-qual       \
+        -Wcast-align -Wstrict-prototypes                \
+        -Wmissing-prototypes -Wmissing-declarations     \
+        -Wmissing-field-initializers -Wunreachable-code \
+        -Wvariadic-macros -Werror
+
 .PHONY: clean cleaner
 
 scm: scm.h util.o model.o read.o eval.o print.o repl.c
-	cc -Wall -ansi -o scm util.o model.o read.o eval.o \
+	$(CC) $(FLAGS) -o scm util.o model.o read.o eval.o \
          print.o repl.c
 
 util.o: scm.h util.c
-	cc -Wall -ansi -c util.c
+	$(CC) $(FLAGS) -c util.c
 
 model.o: scm.h model.c
-	cc -Wall -ansi -c model.c
+	$(CC) $(FLAGS) -c model.c
 
 read.o: scm.h read.c
-	cc -Wall -ansi -c read.c
+	$(CC) $(FLAGS) -c read.c
 
 eval.o: scm.h eval.c
-	cc -Wall -ansi -c eval.c
+	$(CC) $(FLAGS) -c eval.c
 
 print.o: scm.h print.c
-	cc -Wall -ansi -c print.c
+	$(CC) $(FLAGS) -c print.c
 
 clean:
 	rm -f *.o

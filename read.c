@@ -2,18 +2,18 @@
 #include <ctype.h>
 #include "scm.h"
 
-int scm_is_delimiter(int c) {
+static int scm_is_delimiter(int c) {
     return c == '\t' || c == '\n' ||
            c == '\r' || c == ' '  ||
            c == ')'  || c == ';'  ||
            c == EOF;
 }
 
-int scm_digit_value(int c) {
+static int scm_digit_value(int c) {
     return c - '0';
 }
 
-scm_object scm_read_number(FILE *in) {
+static scm_object scm_read_number(FILE *in) {
     char is_negative = 0;
     int c;
     scm_int num = 0, tmp;
@@ -30,10 +30,10 @@ scm_object scm_read_number(FILE *in) {
     while (isdigit(c)) {
         tmp = num * 10 + scm_digit_value(c);
         /* The next line assumes that if adding c in the
-         * line causes tmp to overflow, the overflow will
-         * mean tmp is less than num. This will be true
-         * if the base of the number being read is small
-         * in comparison to the size of tmp.
+         * line above causes tmp to overflow, the overflow
+         * will mean tmp is less than num. This will be
+         * true if the base of the number being read is
+         * small in comparison to the size of tmp.
          */
         if ((tmp < num) || (tmp > scm_fixnum_max)) {
             scm_fatal("scm_read_number: number too large");
