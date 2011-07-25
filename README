@@ -18,15 +18,7 @@ much of the code in Royal Scheme.
 Example build and use.
 
 $ cd royal-scheme
-$ make
-cc -Wall -ansi -c util.c
-cc -Wall -ansi -c model.c
-cc -Wall -ansi -c read.c
-cc -Wall -ansi -c eval.c
-cc -Wall -ansi -c print.c
-cc -Wall -ansi -o scm util.o model.o read.o eval.o \
-         print.o repl.c
-$ ./scm
+$ make && ./scm
 Welcome to Royal Scheme. Ctrl-c to exit.
 > 123
 123
