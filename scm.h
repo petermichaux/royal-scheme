@@ -18,9 +18,9 @@ typedef long scm_int;
 /* A scm_object can be any of Scheme's many types:
  * the empty list, boolean, number, symbol,
  * pair, vector, string, port, etc. For now we only have
- * fixnums which will fit in a scm_int.
+ * fixnums which will fit in a long.
  */
-typedef scm_int scm_object;
+typedef long scm_object;
 
 /* Trival conversions to and from fixnum since they are
  * currently the only type.

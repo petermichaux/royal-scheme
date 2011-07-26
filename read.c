@@ -65,10 +65,7 @@ scm_object scm_read(FILE *in) {
 
 loop:
     switch (c0 = getc(in)) {
-    case ' ':
-    case '\t':
-    case '\r':
-    case '\n':
+    case ' ': case '\t': case '\r': case '\n':
         goto loop;
     case ';':
         /* comments continue to the end of the line */
@@ -78,8 +75,7 @@ loop:
             }
         }
         goto loop;
-    case '+':
-    case '-':
+    case '+': case '-':
         c1 = getc(in);
         if (isdigit(c1)) {
             c1 = ungetc(c1, in);
