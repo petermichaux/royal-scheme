@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -ansi -pedantic-errors -Wall -Wextra -Werror    \
+CFLAGS = -std=c89 -pedantic-errors -Wall -Wextra -Werror \
          -Wmissing-include-dirs                          \
          -Wswitch-default -Wswitch-enum -Wundef          \
          -Wdeclaration-after-statement -Wcast-qual       \
@@ -14,7 +14,10 @@ OBJECTS = util.o model.o read.o eval.o print.o repl.o
 .PHONY: clean cleaner
 
 scm: scm.h $(OBJECTS)
-	$(CC) $(CFLAGS) -o scm $(OBJECTS)
+	$(CC) -o scm $(OBJECTS)
+
+%.o: %.c scm.h
+	$(CC) $(CFLAGS) -c $<
 
 clean:
 	rm -f *.o
