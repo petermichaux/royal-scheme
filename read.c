@@ -4,8 +4,7 @@
 
 static int scm_is_delimiter(int c) {
     return c == '\t' || c == '\n' ||
-           c == '\r' || c == ' '  ||
-           c == EOF;
+           c == '\r' || c == ' ';
 }
 
 static int scm_digit_value(int c) {
