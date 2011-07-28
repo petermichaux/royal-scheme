@@ -5,7 +5,6 @@
 static int scm_is_delimiter(int c) {
     return c == '\t' || c == '\n' ||
            c == '\r' || c == ' '  ||
-           c == ')'  || c == ';'  ||
            c == EOF;
 }
 
@@ -67,14 +66,6 @@ loop:
     switch (c0 = getc(in)) {
     case ' ': case '\t': case '\r': case '\n':
         goto loop;
-    case ';':
-        /* comments continue to the end of the line */
-        while ((c0 = getc(in)) != EOF) {
-            if (c0 == '\n') {
-                break;
-            }
-        }
-        goto loop;
     case '+': case '-':
         c1 = getc(in);
         if (isdigit(c1)) {
@@ -85,8 +76,8 @@ loop:
             result = scm_read_number(in);
             if (c0 == '-') {
                 /* We know scm_read_number returns a
-                 * positive result in this case and
-                 * so we can negate with our assumption
+                 * positive result in this case and so we
+                 * can negate safetly with our assumption
                  * of two's complement architecture.
                  */
                 result = scm_fixnum_make(
