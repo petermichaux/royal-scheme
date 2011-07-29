@@ -94,9 +94,7 @@ loop:
             result = scm_read_number(in);
             if (c0 == '-') {
                 /* We know scm_read_number returns a
-                 * positive result in this case and so we
-                 * can negate safetly with our assumption
-                 * of two's complement architecture.
+                 * positive result in this case.
                  */
                 result = scm_number_negate(result);
             }
