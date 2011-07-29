@@ -23,7 +23,7 @@ typedef long scm_int;
 typedef long scm_object;
 
 /* Trival conversions to and from fixnum since they are
- * currently the only type.
+ * currently the only type now.
  */
 #define scm_fixnum_make(val) ((scm_object)(val))
 #define scm_fixnum_value(object) ((scm_int)(object))
