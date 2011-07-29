@@ -12,13 +12,13 @@ static int scm_digit_value(int c) {
 }
 
 static scm_object scm_read_number(FILE *in) {
-    char is_negative = 0;
+    char sign = '+';
     int c;
     scm_int num = 0, tmp;
 
     c = getc(in);
-    if (c == '-') {
-        is_negative = 1;
+    if (c == '-' || c == '+') {
+        sign = c;
         c = getc(in);
     }
     if (!isdigit(c)) {
@@ -39,22 +39,36 @@ static scm_object scm_read_number(FILE *in) {
         num = tmp;
         c = getc(in);
     }
-    if (!scm_is_delimiter(c)) {
+    if (scm_is_delimiter(c)) {
+        /* Push the delimiter back on the stream so it can
+         * be read again elsewhere. This will be important
+         * in the case of a ')' delimiter, for example,
+         * as some other code in this reader will be waiting
+         * for that character to indicate the end of a list.
+         *
+         * Check for EOF in case scm_is_delimiter is
+         * allowing it as a delimiter. If trying to push
+         * EOF back on the stream we will not know if
+         * an error has occured.
+         */
+        if (c != EOF) {
+            c = ungetc(c, in);
+            if (c == EOF) {
+                scm_fatal("scm_read_number: "
+                    "could not ungetc");
+            }
+        }
+    }
+    else {
         scm_fatal("scm_read_number: "
             "number not followed by a delimiter");
-    }
-    if (c != EOF) {
-        c = ungetc(c, in);
-        if (c == EOF) {
-            scm_fatal("scm_read_number: could not ungetc");
-        }
     }
     /* The next line assumes that any value of num, which
      * is not greater than scm_fixnum_max, can be negated
      * and still fit into a fixnum. This is true because
      * of assumption of two's complement hardware.
      */
-    return scm_fixnum_make(is_negative ? -num : num);
+    return scm_fixnum_make(sign == '-' ? -num : num);
 }
 
 scm_object scm_read(FILE *in) {
