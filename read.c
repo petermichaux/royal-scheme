@@ -98,8 +98,7 @@ loop:
                  * can negate safetly with our assumption
                  * of two's complement architecture.
                  */
-                result = scm_fixnum_make(
-                             - scm_fixnum_value(result));
+                result = scm_number_negate(result);
             }
         }
         else {
