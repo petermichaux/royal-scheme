@@ -46,10 +46,9 @@ static scm_object scm_read_number(FILE *in) {
          * as some other code in this reader will be waiting
          * for that character to indicate the end of a list.
          *
-         * Check for EOF in case scm_is_delimiter is
-         * allowing it as a delimiter. If trying to push
-         * EOF back on the stream we will not know if
-         * an error has occured.
+         * Check for EOF in case scm_is_delimiter allows it 
+         * as a delimiter. If trying to push EOF back on the
+         * stream we will not know if an error has occured.
          */
         if (c != EOF) {
             c = ungetc(c, in);
