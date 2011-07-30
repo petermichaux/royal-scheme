@@ -37,8 +37,6 @@ typedef long scm_object;
     ((((scm_int)1)<<(8*sizeof(scm_object)-1))+1)
 #define scm_fixnum_max (-(scm_fixnum_min))
 
-scm_object scm_number_negate(scm_object num);
-
 /************************* read.c *************************/
 
 scm_object scm_read(FILE *in);

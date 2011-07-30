@@ -72,50 +72,24 @@ static scm_object scm_read_number(FILE *in) {
 }
 
 scm_object scm_read(FILE *in) {
-    int c0, c1;
+    int c;
     scm_object result;
 
 loop:
-    switch (c0 = getc(in)) {
+    switch (c = getc(in)) {
     case ' ': case '\t': case '\r': case '\n':
         goto loop;
     case '+': case '-':
-        /* Because we want to peek at the next character
-         * to determine if this is a number not a symbol,
-         * we need to retain the sign character,
-         * '+' or '-', in c0 as ungetc guarantees only
-         * one character push back onto a stream. */
-        c1 = getc(in);
-        if (isdigit(c1)) {
-            c1 = ungetc(c1, in);
-            if (c1 == EOF) {
-                scm_fatal("scm_read: could not ungetc");
-            }
-            result = scm_read_number(in);
-            if (c0 == '-') {
-                /* We know scm_read_number returns a
-                 * positive result in this case.
-                 */
-                result = scm_number_negate(result);
-            }
-        }
-        else {
-            /* TODO Add symbol support for the symbols
-             * '+', '-' and those starting with '+' '-'.
-             */
-            scm_fatal("scm_read: symbols not supported");
-        }
-        break;
     case '0': case '1': case '2': case '3': case '4':
     case '5': case '6': case '7': case '8': case '9':
-        c0 = ungetc(c0, in);
-        if (c0 == EOF) {
+        c = ungetc(c, in);
+        if (c == EOF) {
             scm_fatal("scm_read: could not ungetc");
         }
         result = scm_read_number(in);
         break;
     default:
-        scm_fatal("scm_read: unexpected char '\\%o'", c0);
+        scm_fatal("scm_read: unexpected char '\\%o'", c);
     }
 
     return result;
