@@ -6,9 +6,9 @@
 /* scm_fatal is borrowed from K&R2e page 174 where it is
  * called "error".
  *
- * Purposely ignoring return values of fprintf and
+ * Purposely ignoring the return values of fprintf and
  * vfprintf because we want to continue to the exit
- * even if there is an error printing.
+ * even if a printing error occurs.
  */
 void scm_fatal(char *fmt, ...) {
     va_list args;

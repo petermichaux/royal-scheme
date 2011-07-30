@@ -10,20 +10,18 @@ void scm_fatal(char *fmt, ...);
 
 /************************ model.c *************************/
 
-/* Assume scm_int is large enough to hold any
- * scm_object fixnum.
+/* scm_int must be large enough to hold any Scheme fixnum.
  */
 typedef long scm_int;
 
-/* A scm_object can be any of Scheme's many types:
- * the empty list, boolean, number, symbol,
- * pair, vector, string, port, etc. For now we only have
- * fixnums which will fit in a long.
+/* A scm_object can be any of Scheme's many types: boolean,
+ * the empty list, number, symbol, pair, vector, etc.
+ * For now we only have fixnums which will fit in a long.
  */
 typedef long scm_object;
 
 /* Trival conversions to and from fixnum since they are
- * currently the only type now.
+ * the only type for now.
  */
 #define scm_fixnum_make(val) ((scm_object)(val))
 #define scm_fixnum_value(object) ((scm_int)(object))

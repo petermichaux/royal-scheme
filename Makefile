@@ -1,3 +1,5 @@
+# GNU Makefile
+
 CC = gcc
 
 CFLAGS = -std=c89 -pedantic-errors -Wall -Wextra -Werror \
