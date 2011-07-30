@@ -82,7 +82,7 @@ loop:
     case '+': case '-':
         /* Because we want to peek at the next character
          * to determine if this is a number not a symbol,
-         * we need to retain the sign character, 
+         * we need to retain the sign character,
          * '+' or '-', in c0 as ungetc guarantees only
          * one character push back onto a stream. */
         c1 = getc(in);

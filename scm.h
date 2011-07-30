@@ -27,6 +27,7 @@ typedef long scm_object;
  */
 #define scm_fixnum_make(val) ((scm_object)(val))
 #define scm_fixnum_value(object) ((scm_int)(object))
+
 /* Assume a two's complement hardware representation
  * and ensure that any positive or negative number
  * can be algebraically negated and the result is
