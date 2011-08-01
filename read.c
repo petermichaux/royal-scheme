@@ -3,8 +3,7 @@
 #include "scm.h"
 
 static int scm_is_delimiter(int c) {
-    return c == '\t' || c == '\n' ||
-           c == '\r' || c == ' ';
+    return isspace(c);
 }
 
 static int scm_digit_value(int c) {
