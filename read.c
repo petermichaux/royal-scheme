@@ -77,8 +77,7 @@ static scm_object scm_read_number(FILE *in, int c) {
          * stream we will not know if an error has occurred.
          */
         if (c != EOF) {
-            c = ungetc(c, in);
-            if (c == EOF) {
+            if (ungetc(c, in) == EOF) {
                 scm_fatal("scm_read_number: ungetc error");
             }
         }
