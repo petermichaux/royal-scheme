@@ -121,7 +121,13 @@ scm_object scm_read(FILE *in) {
         }
         /********** FALL THROUGH **********/
     default:
-        scm_fatal("scm_read: unexpected char '\\%o'", c);
+        if (isgraph(c)) {
+            scm_fatal("scm_read: "
+                "unexpected char #\\%c", c);
+        } else {
+            scm_fatal("scm_read: "
+                "unexpected char #\\%o", c);
+        }
     }
 
     return result;
