@@ -76,10 +76,8 @@ static scm_object scm_read_number(FILE *in, int c) {
          * as a delimiter. If trying to push EOF back on the
          * stream we will not know if an error has occurred.
          */
-        if (c != EOF) {
-            if (ungetc(c, in) == EOF) {
-                scm_fatal("scm_read_number: ungetc error");
-            }
+        if (c != EOF && ungetc(c, in) == EOF) {
+            scm_fatal("scm_read_number: ungetc error");
         }
     } else {
         scm_fatal("scm_read_number: "
