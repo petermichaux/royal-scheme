@@ -84,6 +84,15 @@ scm_object scm_read(FILE *in) {
     int c;
     scm_object result;
 
+    /* The reader code checks ferror(in) to determine if an 
+     * error occured during reading. If ferror(in)
+     * already indicates error then results of ferror(in)
+     * will be ambiguous.
+     */
+    if (ferror(in)) {
+        scm_fatal("scm_read: can't read stream with error");
+    }
+
 loop:
     switch (c = getc(in)) {
     case ' ': case '\t': case '\r': case '\n':
@@ -93,6 +102,12 @@ loop:
     case '5': case '6': case '7': case '8': case '9':
         result = scm_read_number(in, c);
         break;
+    case EOF:
+        if (ferror(in)) {
+            scm_fatal("scm_read: getc error");
+            break;
+        }
+        /********** FALL THROUGH **********/
     default:
         scm_fatal("scm_read: unexpected char '\\%o'", c);
     }
