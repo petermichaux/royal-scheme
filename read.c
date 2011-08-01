@@ -11,6 +11,23 @@ static int scm_digit_value(int c) {
     return c - '0';
 }
 
+/* Skip over whitespace and return the next sigificant
+ * character.
+ *
+ * Like getc, returns EOF if end of file found or
+ * an error occurs. Use ferror to discriminate.
+ */
+static int scm_nextc(FILE *in) {
+    int c;
+
+    while ((c = getc(in)) != EOF) {
+        if (!isspace(c)) {
+            break;
+        }
+    }
+    return c;
+}
+
 static scm_object scm_read_number(FILE *in, int c) {
     char sign = '+';
     scm_int num = 0, tmp = -1;
@@ -84,7 +101,7 @@ scm_object scm_read(FILE *in) {
     int c;
     scm_object result;
 
-    /* The reader code checks ferror(in) to determine if an 
+    /* The reader code checks ferror(in) to determine if an
      * error occured during reading. If ferror(in)
      * already indicates error then results of ferror(in)
      * will be ambiguous.
@@ -93,10 +110,9 @@ scm_object scm_read(FILE *in) {
         scm_fatal("scm_read: can't read stream with error");
     }
 
-loop:
-    switch (c = getc(in)) {
-    case ' ': case '\t': case '\r': case '\n':
-        goto loop;
+    c = scm_nextc(in); /* get first non-space */
+
+    switch (c) {
     case '+': case '-':
     case '0': case '1': case '2': case '3': case '4':
     case '5': case '6': case '7': case '8': case '9':
