@@ -57,8 +57,7 @@ static scm_object scm_read_number(FILE *in) {
                     "could not ungetc");
             }
         }
-    }
-    else {
+    } else {
         scm_fatal("scm_read_number: "
             "number not followed by a delimiter");
     }
