@@ -14,6 +14,7 @@ static int scm_digit_value(int c) {
 static scm_object scm_read_number(FILE *in, int c) {
     char sign = '+';
     scm_int num = 0, tmp;
+    scm_object result;
 
     if (c == '-' || c == '+') {
         sign = c;
@@ -64,7 +65,9 @@ static scm_object scm_read_number(FILE *in, int c) {
      * and still fit into a fixnum. This is true because
      * of assumption of two's complement hardware.
      */
-    return scm_fixnum_make(sign == '-' ? -num : num);
+    result = scm_fixnum_make(sign == '-' ? -num : num);
+
+    return result;
 }
 
 scm_object scm_read(FILE *in) {
