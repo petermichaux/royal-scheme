@@ -74,7 +74,7 @@ static scm_object scm_read_number(FILE *in, int c) {
          *
          * Check for EOF in case scm_is_delimiter allows it
          * as a delimiter. If trying to push EOF back on the
-         * stream we will not know if an error has occured.
+         * stream we will not know if an error has occurred.
          */
         if (c != EOF) {
             c = ungetc(c, in);
@@ -101,7 +101,7 @@ scm_object scm_read(FILE *in) {
     scm_object result;
 
     /* The reader code checks ferror(in) to determine if an
-     * error occured during reading. If ferror(in)
+     * error occurred during reading. If ferror(in)
      * already indicates error then results of ferror(in)
      * will be ambiguous.
      */
