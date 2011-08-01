@@ -13,16 +13,16 @@ static int scm_digit_value(int c) {
 
 static scm_object scm_read_number(FILE *in, int c) {
     char sign = '+';
-    scm_int num = 0, tmp;
+    scm_int num = 0, tmp = -1;
     scm_object result;
 
+    /* Carefully organize this code so only one check
+     * for ferror below. If EOF is returned anywhere 
+     * along the way, the next thing that will execute
+     * is the ferror(in) call. */
     if (c == '-' || c == '+') {
         sign = c;
         c = getc(in);
-    }
-    if (!isdigit(c)) {
-        scm_fatal("scm_read_number: "
-            "number must start with a digit");
     }
     while (isdigit(c)) {
         tmp = num * 10 + scm_digit_value(c);
@@ -38,6 +38,17 @@ static scm_object scm_read_number(FILE *in, int c) {
         num = tmp;
         c = getc(in);
     }
+    if (ferror(in)) {
+        scm_fatal("scm_read_number: getc error");
+    }
+    /* If tmp is still negative then it was never assigned
+     * to indicating the body of the while loop above
+     * did not execute even once.
+     */
+    if (tmp < 0) {
+        scm_fatal("scm_read_number: "
+            "must be at least one digit");
+    }
     if (scm_is_delimiter(c)) {
         /* Push the delimiter back on the stream so it can
          * be read again elsewhere. This will be important
@@ -52,8 +63,7 @@ static scm_object scm_read_number(FILE *in, int c) {
         if (c != EOF) {
             c = ungetc(c, in);
             if (c == EOF) {
-                scm_fatal("scm_read_number: "
-                    "could not ungetc");
+                scm_fatal("scm_read_number: ungetc error");
             }
         }
     } else {
