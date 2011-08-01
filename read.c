@@ -11,12 +11,10 @@ static int scm_digit_value(int c) {
     return c - '0';
 }
 
-static scm_object scm_read_number(FILE *in) {
+static scm_object scm_read_number(FILE *in, int c) {
     char sign = '+';
-    int c;
     scm_int num = 0, tmp;
 
-    c = getc(in);
     if (c == '-' || c == '+') {
         sign = c;
         c = getc(in);
@@ -80,11 +78,7 @@ loop:
     case '+': case '-':
     case '0': case '1': case '2': case '3': case '4':
     case '5': case '6': case '7': case '8': case '9':
-        c = ungetc(c, in);
-        if (c == EOF) {
-            scm_fatal("scm_read: could not ungetc");
-        }
-        result = scm_read_number(in);
+        result = scm_read_number(in, c);
         break;
     default:
         scm_fatal("scm_read: unexpected char '\\%o'", c);
