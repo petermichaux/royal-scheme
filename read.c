@@ -95,8 +95,8 @@ scm_object scm_read(FILE *in) {
     int c;
     scm_object result;
 
-    /* The reader code checks ferror(in) to determine if an
-     * error occurred during reading. If ferror(in)
+    /* The reader code checks ferror(in) to determine if
+     * an error occurred during reading. If ferror(in)
      * already indicates error then results of ferror(in)
      * will be ambiguous.
      */
