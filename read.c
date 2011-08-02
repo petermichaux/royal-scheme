@@ -33,7 +33,7 @@ static scm_object scm_read_number(FILE *in, int c) {
     scm_object result;
 
     /* Carefully organize this code so only one check
-     * for ferror below. If EOF is returned anywhere 
+     * for ferror below. If EOF is returned anywhere
      * along the way, the next thing that will execute
      * is the ferror(in) call. */
     if (c == '-' || c == '+') {
