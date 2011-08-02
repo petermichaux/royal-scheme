@@ -56,15 +56,13 @@ static scm_object scm_read_number(FILE *in, int c) {
     }
     if (ferror(in)) {
         scm_fatal("getc failed");
-    }
-    /* If tmp is still negative then it was never assigned
-     * to indicating the body of the while loop above
-     * did not execute even once.
-     */
-    if (tmp < 0) {
+    } else if (tmp < 0) {
+        /* If tmp is still negative then it was never
+         * assigned to indicating the body of the while
+         * loop above did not execute even once.
+         */
         scm_fatal("digit expected");
-    }
-    if (scm_is_delimiter(c)) {
+    } else if (scm_is_delimiter(c)) {
         /* Push the delimiter back on the stream so it can
          * be read again elsewhere. This will be important
          * in the case of a ')' delimiter, for example,
@@ -77,16 +75,19 @@ static scm_object scm_read_number(FILE *in, int c) {
          */
         if (c != EOF && ungetc(c, in) == EOF) {
             scm_fatal("ungetc failed");
+        } else {
+            /* The next line assumes that any value of num,
+             * which is not greater than scm_fixnum_max,
+             * can be negated and still fit into a fixnum.
+             * This is true because of assumption of two's
+             * complement hardware.
+             */
+            result =
+                scm_fixnum_make(sign == '-' ? -num : num);
         }
     } else {
         scm_fatal("delimiter expected after number");
     }
-    /* The next line assumes that any value of num, which
-     * is not greater than scm_fixnum_max, can be negated
-     * and still fit into a fixnum. This is true because
-     * of assumption of two's complement hardware.
-     */
-    result = scm_fixnum_make(sign == '-' ? -num : num);
 
     return result;
 }
