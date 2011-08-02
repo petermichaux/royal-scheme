@@ -49,21 +49,20 @@ static scm_object scm_read_number(FILE *in, int c) {
          * small in comparison to the size of tmp.
          */
         if ((tmp < num) || (tmp > scm_fixnum_max)) {
-            scm_fatal("scm_read_number: number too large");
+            scm_fatal("number too large");
         }
         num = tmp;
         c = getc(in);
     }
     if (ferror(in)) {
-        scm_fatal("scm_read_number: getc error");
+        scm_fatal("getc failed");
     }
     /* If tmp is still negative then it was never assigned
      * to indicating the body of the while loop above
      * did not execute even once.
      */
     if (tmp < 0) {
-        scm_fatal("scm_read_number: "
-            "must be at least one digit");
+        scm_fatal("digit expected");
     }
     if (scm_is_delimiter(c)) {
         /* Push the delimiter back on the stream so it can
@@ -77,11 +76,10 @@ static scm_object scm_read_number(FILE *in, int c) {
          * stream we will not know if an error has occurred.
          */
         if (c != EOF && ungetc(c, in) == EOF) {
-            scm_fatal("scm_read_number: ungetc error");
+            scm_fatal("ungetc failed");
         }
     } else {
-        scm_fatal("scm_read_number: "
-            "number not followed by a delimiter");
+        scm_fatal("delimiter expected after number");
     }
     /* The next line assumes that any value of num, which
      * is not greater than scm_fixnum_max, can be negated
@@ -103,7 +101,7 @@ scm_object scm_read(FILE *in) {
      * will be ambiguous.
      */
     if (ferror(in)) {
-        scm_fatal("scm_read: can't read stream with error");
+        scm_fatal("cannot read stream with error");
     }
 
     c = scm_nextc(in); /* get first non-space */
@@ -116,17 +114,15 @@ scm_object scm_read(FILE *in) {
         break;
     case EOF:
         if (ferror(in)) {
-            scm_fatal("scm_read: getc error");
+            scm_fatal("getc failed");
             break;
         }
         /********** FALL THROUGH **********/
     default:
         if (isgraph(c)) {
-            scm_fatal("scm_read: "
-                "unexpected char #\\%c", c);
+            scm_fatal("unexpected char #\\%c", c);
         } else {
-            scm_fatal("scm_read: "
-                "unexpected char #\\%o", c);
+            scm_fatal("unexpected char #\\%o", c);
         }
     }
 
