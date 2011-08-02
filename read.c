@@ -241,9 +241,10 @@ scm_object scm_read(FILE *in) {
         case EOF:
             if (ferror(in)) {
                 scm_fatal("getc failed");
-                break;
-            }
-            /********** FALL THROUGH **********/
+            } else {
+                scm_fatal("unexpected EOF");
+            }            
+            break;
         default:
             if (isgraph(c)) {
                 scm_fatal("unexpected char #\\%c", c);
