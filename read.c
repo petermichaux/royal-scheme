@@ -92,6 +92,120 @@ static scm_object scm_read_number(FILE *in, int c) {
     return result;
 }
 
+static scm_object scm_read_boolean(FILE *in, int c) {
+    scm_object result;
+
+    switch (c) {
+    case 't':
+        result = scm_true;
+        break;
+    case 'f':
+        result = scm_false;
+        break;
+    default:
+        scm_fatal("scm_read_boolean: illegal argument");
+    }
+
+    c = getc(in);
+    /* Check for error first in case scm_is_delimiter
+     * allows EOF as a delimiter.
+     */
+    if (ferror(in)) {
+        scm_fatal("getc failed");
+    } else if (scm_is_delimiter(c)) {
+        if (c != EOF && ungetc(c, in) == EOF) {
+            scm_fatal("ungetc failed");
+        }
+    } else {
+        scm_fatal("delimiter expected after boolean");
+    }
+
+    return result;
+}
+
+/* The left paren must have already been read elsewhere
+ * before scm_read_list called.
+ */
+static scm_object scm_read_list(FILE *in) {
+    int c;
+    scm_object result;
+
+    c = scm_nextc(in); /* get first non-space */
+    switch (c) {
+    case ')':
+        result = scm_null;
+        break;
+    case EOF:
+        if (ferror(in)) {
+            scm_fatal("getc failed");
+        } else {
+            scm_fatal("incomplete list, EOF reached");
+        }
+        break;
+    default:
+        scm_fatal("invalid list");
+    }
+
+    return result;
+}
+
+/* c should be a character other than '\0'
+ * str should be a non-empty string
+ */
+static scm_object scm_read_character_name(FILE *in, int c,
+    char *str, scm_object result) {
+
+    while (c == *str && *str != '\0') {
+        c = getc(in);
+        str++;
+    }
+    if (ferror(in)) {
+        scm_fatal("getc failed");
+    } else if (*str != '\0') {
+        scm_fatal("unknown character name");
+    } else if (scm_is_delimiter(c)) {
+        if (c != EOF && ungetc(c, in) == EOF) {
+            scm_fatal("ungetc failed");
+        }
+    } else {
+        scm_fatal("unknown character name");
+    }
+
+    return result;
+}
+
+static scm_object scm_read_character(FILE *in) {
+    int c, d;
+    scm_object result;
+
+    c = getc(in);
+    d = getc(in); /* one character lookahead */
+    if (ferror(in)) {
+        scm_fatal("getc failed");
+    } else if (scm_is_delimiter(d)) {
+        if (d != EOF && ungetc(d, in) == EOF) {
+            scm_fatal("ungetc failed");
+        } else {
+            result = scm_char_make(c);
+        }
+    } else {
+        switch (c) {
+        case 'n':
+            result = scm_read_character_name(in, d,
+                "ewline", scm_char_make('\n'));
+            break;
+        case 's':
+            result = scm_read_character_name(in, d,
+                "pace", scm_char_make(' '));
+            break;
+        default:
+            scm_fatal("unknown character name\n");
+        }
+    }
+
+    return result;
+}
+
 scm_object scm_read(FILE *in) {
     int c;
     scm_object result;
@@ -113,12 +227,38 @@ scm_object scm_read(FILE *in) {
     case '5': case '6': case '7': case '8': case '9':
         result = scm_read_number(in, c);
         break;
+    case '(':
+        result = scm_read_list(in);
+        break;
+    case '#':
+        switch (c = getc(in)) {
+        case 't': case 'f':
+            result = scm_read_boolean(in, c);
+            break;
+        case '\\':
+            result = scm_read_character(in);
+            break;
+        case EOF:
+            if (ferror(in)) {
+                scm_fatal("getc failed");
+                break;
+            }
+            /********** FALL THROUGH **********/
+        default:
+            if (isgraph(c)) {
+                scm_fatal("unexpected char #\\%c", c);
+            } else {
+                scm_fatal("unexpected char #\\%o", c);
+            }
+        }
+        break;
     case EOF:
         if (ferror(in)) {
             scm_fatal("getc failed");
-            break;
+        } else {
+            result = scm_eof;
         }
-        /********** FALL THROUGH **********/
+        break;
     default:
         if (isgraph(c)) {
             scm_fatal("unexpected char #\\%c", c);

@@ -19,6 +19,13 @@ static void repl(void) {
          * the user.
          */
         object = scm_read(stdin);
+        if (object == scm_eof) {
+            p = printf("\n");
+            if (p < 0) {
+                scm_fatal("repl: print failed");
+            }
+            break;
+        }
         object = scm_eval(object);
         p = scm_write(stdout, object);
         if (p < 0) {
@@ -34,5 +41,6 @@ static void repl(void) {
 int main(void) {
     printf("Welcome to Royal Scheme. Ctrl-c to exit.\n");
     repl();
+    printf("Goodbye\n"); /* Indicate controlled exit. */
     return 0;
 }

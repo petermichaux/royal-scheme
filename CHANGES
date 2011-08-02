@@ -1,3 +1,6 @@
+0.2 - July 30, 2011 - Peter Michaux
+    - immediate integers, characters, null, #t, #f, eof
+
 0.1 - July 29, 2011 - Peter Michaux
     - initial REPL
     - decimal integers
