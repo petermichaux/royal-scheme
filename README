@@ -26,6 +26,14 @@ Welcome to Royal Scheme. Ctrl-c to exit.
 123
 > -123
 -123
+> #t
+#t
+> #\c
+#\c
+> #\newline
+#\newline
+> ()
+()
 > a
 error: scm_read: unexpected char '\141'
 
