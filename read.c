@@ -93,19 +93,13 @@ static scm_object scm_read_number(FILE *in, int c) {
     return result;
 }
 
+/* If c is 'f' then the boolean result is false. For
+ * any other value of c the boolean result is true.
+ */
 static scm_object scm_read_boolean(FILE *in, int c) {
     scm_object result;
 
-    switch (c) {
-    case 't':
-        result = scm_true;
-        break;
-    case 'f':
-        result = scm_false;
-        break;
-    default:
-        scm_fatal("scm_read_boolean: illegal argument");
-    }
+    result = (c == 'f') ? scm_false : scm_true;
 
     c = getc(in);
     /* Check for error first in case scm_is_delimiter
