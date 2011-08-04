@@ -30,7 +30,8 @@ typedef long scm_object;
 #define scm_char_bits      4
 
 /* The special objects include Scheme's
- * null, true, false, and end-of-file. */
+ * null, true, false, and end-of-file.
+ */
 #define scm_special_mask  15
 #define scm_special_tag   14
 #define scm_special_bits   4
