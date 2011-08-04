@@ -37,11 +37,11 @@ typedef long scm_object;
 #define scm_special_bits   4
 
 #define scm_fixnum_make(val) ((scm_object) \
-    (((scm_int)(val))<<scm_fixnum_bits) + scm_fixnum_tag)
+    (((scm_int)(val)) << scm_fixnum_bits) + scm_fixnum_tag)
 #define scm_fixnum_is(object) \
     ((((scm_int)(object))&scm_fixnum_mask)==scm_fixnum_tag)
 #define scm_fixnum_value(object) \
-    (((scm_int)(object))>>scm_fixnum_bits)
+    (((scm_int)(object)) >> scm_fixnum_bits)
 
 /* Assume a two's complement hardware representation and
  * arithmetic right shift of signed integers.
@@ -54,14 +54,14 @@ typedef long scm_object;
 #define scm_fixnum_max (-(scm_fixnum_min))
 
 #define scm_char_make(val) ((scm_object) \
-    (((scm_int)(val))<<scm_char_bits) + scm_char_tag)
+    (((scm_int)(val)) << scm_char_bits) + scm_char_tag)
 #define scm_char_is(object) \
-    ((((scm_int)(object))&scm_char_mask) == scm_char_tag)
+    ((((scm_int)(object)) & scm_char_mask) == scm_char_tag)
 #define scm_char_value(object) \
-    (((scm_int)(object))>>scm_char_bits)
+    (((scm_int)(object)) >> scm_char_bits)
 
-#define scm_special_make(n) \
-    ((scm_object)(((n)<<scm_special_bits)+scm_special_tag))
+#define scm_special_make(n) ((scm_object) \
+    (((n) << scm_special_bits) + scm_special_tag))
 
 #define scm_null  scm_special_make(0)
 #define scm_true  scm_special_make(1)
