@@ -17,7 +17,6 @@ typedef long scm_int;
 
 /* A scm_object can be any of Scheme's many types: boolean,
  * the empty list, number, symbol, pair, vector, etc.
- * For now we only have fixnums which will fit in a long.
  */
 typedef long scm_object;
 
