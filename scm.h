@@ -54,7 +54,7 @@ typedef long scm_object;
 #define scm_fixnum_max (-(scm_fixnum_min))
 
 #define scm_char_make(val) ((scm_object) \
-    (((scm_int)(val)) << scm_char_bits) + scm_char_tag)
+    ((((scm_int)(val)) << scm_char_bits) + scm_char_tag))
 #define scm_char_is(object) \
     ((((scm_int)(object)) & scm_char_mask) == scm_char_tag)
 #define scm_char_value(object) \
