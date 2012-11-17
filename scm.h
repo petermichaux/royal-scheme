@@ -39,7 +39,7 @@ typedef long scm_object;
 #define scm_special_bits   4
 
 #define scm_fixnum_make(val) ((scm_object) \
-    (((scm_int)(val)) << scm_fixnum_bits) + scm_fixnum_tag)
+   ((((scm_int)(val)) << scm_fixnum_bits) + scm_fixnum_tag))
 #define scm_fixnum_is(object) \
     ((((scm_int)(object))&scm_fixnum_mask)==scm_fixnum_tag)
 #define scm_fixnum_value(object) \
@@ -56,7 +56,7 @@ typedef long scm_object;
 #define scm_fixnum_max (-(scm_fixnum_min))
 
 #define scm_char_make(val) ((scm_object) \
-    (((scm_int)(val)) << scm_char_bits) + scm_char_tag)
+    ((((scm_int)(val)) << scm_char_bits) + scm_char_tag))
 #define scm_char_is(object) \
     ((((scm_int)(object)) & scm_char_mask) == scm_char_tag)
 #define scm_char_value(object) \
