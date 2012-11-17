@@ -26,8 +26,8 @@ error: scm_read: unexpected char '\141'
 
 For more information see:
 
-    http://peter.michaux.ca/index#Royal%20Scheme
-    http://github.com/petermichaux/royal-scheme
+ * http://peter.michaux.ca/index#Royal%20Scheme
+ * http://github.com/petermichaux/royal-scheme
 
 
 License
